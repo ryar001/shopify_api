@@ -11,3 +11,12 @@ This update introduces a new Python project with the following components:
 *   **Unit Tests (`test_shopify_admin_graphql.py`):** Added unit tests to ensure the correctness and reliability of the Shopify Admin GraphQL API integration.
 
 This set of changes lays the foundation for a new application that leverages the Shopify Admin GraphQL API, adhering to defined project standards and including initial test coverage.
+
+## 2025-08-24
+
+### What's New
+
+#### `endpoint_avail.md`
+
+- Added a new file `endpoint_avail.md` to list available methods in the `ShopifyAdminGraphQl` class.
+- Documented methods for order creation, update, and draft order management.
