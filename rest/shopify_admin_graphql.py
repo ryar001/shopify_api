@@ -6,7 +6,10 @@ from .endpoints import (
     ORDER_EDIT_BEGIN_MUTATION,
     DRAFT_ORDER_CREATE_MUTATION,
     DRAFT_ORDER_COMPLETE_MUTATION,
-    DRAFT_ORDER_UPDATE_MUTATION
+    DRAFT_ORDER_UPDATE_MUTATION,
+    ORDER_CREATE_MANUAL_PAYMENT_MUTATION,
+    SUBSCRIPTION_CONTRACT_CREATE_MUTATION,
+    SUBSCRIPTION_BILLING_ATTEMPT_CREATE_MUTATION
 )
 
 class ShopifyAdminGraphQl:
@@ -52,3 +55,7 @@ class ShopifyAdminGraphQl:
     async def draft_order_update(self, draft_order_id: str, input: dict):
         """Updates an existing draft order."""
         return await self._execute_graphql_query(DRAFT_ORDER_UPDATE_MUTATION, {"id": draft_order_id, "input": input})
+
+    async def order_create_manual_payment(self, input: dict):
+        """Creates a manual payment for an order."""
+        return await self._execute_graphql_query(ORDER_CREATE_MANUAL_PAYMENT_MUTATION, input)

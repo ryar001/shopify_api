@@ -89,3 +89,50 @@ mutation draftOrderUpdate($id: ID!, $input: DraftOrderInput!) {
   }
 }
 """
+
+ORDER_CREATE_MANUAL_PAYMENT_MUTATION = """
+mutation orderCreateManualPayment($id: ID!, $amount: MoneyInput, $paymentMethodName: String, $processedAt: DateTime) {
+  orderCreateManualPayment(id: $id, amount: $amount, paymentMethodName: $paymentMethodName, processedAt: $processedAt) {
+    order {
+      id
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+"""
+
+nano SUBSCRIPTION_CONTRACT_CREATE_MUTATION = """
+mutation subscriptionContractCreate($input: SubscriptionContractCreateInput!) {
+  subscriptionContractCreate(input: $input) {
+    draft {
+      id
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+"""
+
+SUBSCRIPTION_BILLING_ATTEMPT_CREATE_MUTATION = """
+mutation subscriptionBillingAttemptCreate($subscriptionContractId: ID!, $subscriptionBillingAttemptInput: SubscriptionBillingAttemptInput!) {
+  subscriptionBillingAttemptCreate(subscriptionContractId: $subscriptionContractId, subscriptionBillingAttemptInput: $subscriptionBillingAttemptInput) {
+    subscriptionBillingAttempt {
+      id
+      errorMessage
+      order {
+        id
+      }
+      ready
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+"""

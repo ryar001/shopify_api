@@ -1,82 +1,61 @@
+### 1. Core Project Workflow & Context
 
-## to do
-everytime u learn more about the project, update a PLANNING.md, create one if not available
-if `ai-tracker` is called, read the AI_TRACKER_GENIE.md file
+- **Always check `PLANNING.md` first.** This file is the single source of truth for architecture, style, and goals. If it's missing, create it at the project root.
+- **Update `TASK.md` for every task.** Before starting, add a brief description and the current date. Mark it as completed when done. Create this file at the project root if it doesn't exist.
+- **when user start a prompt with `ai-tracker`,eg `ai-tracker update` , read `AI_TRACKER_GENIE.md`.** This file contains instructions relevant to the `ai-tracker` component.
+- **If a closer `.git` repository is detected, use the `GEMINI.md` file from that directory as an additional source of context.**
 
-## for every task
-### Project Awareness & Context
-- **Always read `PLANNING.md`** at the start of a new conversation to understand the project's architecture, goals, style, and constraints. Create one at root if not available
-- **Check `TASK.md`** before starting a new task. If the task isn’t listed, add it with a brief description and today's date. Create one at root if not available
-- **Use consistent naming conventions, file structure, and architecture patterns** as described in `PLANNING.md`.
+---
 
-### Code Structure & Modularity
-- **Never create a file longer than 500 lines of code.** If a file approaches this limit, refactor by splitting it into modules or helper files.
-- **Organize code into clearly separated modules**, grouped by feature or responsibility.
-- **Use clear, consistent imports** (prefer relative imports within packages).
-- For common key name , create a constant file and clearly categories each constant by who is using them for when it output data, eg, for the name of keys from API response
-- **Try to use Typed dict when dict is used**
-- clear state why data will be returned, if arbitrary data, eg , dataframe of list with a lot random data type is returned, create a item class in another file and return that instead
-- Always write code with testability in mind
-- write pure function/method whenever possible
-- use dependency injection whenever possible
-- Do not use any single charactor and breakpoint keyword as variable name
+### 2. Code Quality & Consistency
 
-### When writing/updating a file for packages
-- go through the api documentation and make sure all possible parameters are covered
-    - then map the methods to a concise summary of what it does with its inputs data and outputs data
-    - then write/update the methods requested
-        - make sure the method written is available in the package, do not hallucinate a new method
-    - then update the unit test to cover all the methods
-        - if it requires api_key, ask the user for one else add a mock test that doesn't call the api
-        - if it doesn't require api_key, add a live test that calls the api
-        - if calls failed, add a test for that as well and just alert the user which method failed and the errors
-- if not asked to add new methods, just update the methods that are already in place, no need to add new methods
-- always check the inputs is correct
+- **Modularity is key.** Refactor any file approaching **500 lines** into smaller, feature- or responsibility-based modules.
+- **Standardize data handling.**
+  - Use `TypedDict` for all dictionaries with consistent keys.
+  - For common API keys or data keys, define them as constants in a dedicated file.
+  - When returning complex, arbitrary data (like a list of mixed types), create a structured class for the data and return an instance of that class.
+- **Write for testability.** Use **pure functions** and **dependency injection** whenever possible.
+- **Follow Python best practices:** Adhere to **PEP8**, use **type hints**, and format with **black**.
+- **Avoid single-character variable names** and the use of Python keywords as variable names.
 
-### Testing & Reliability
-- **Always create Pytest unit tests for new features** (functions, classes, routes, etc).
-- **After updating any logic**, check whether existing unit tests need to be updated. If so, do it.
-- **Tests should live in a `/tests` folder** mirroring the main app structure.
-  - Include at least:
-    - 1 test for expected use
-    - 1 edge case
-    - 1 failure case
+---
 
-### ✅ Task Completion
-- **Mark completed tasks in `TASK.md`** immediately after finishing them.
-- Add new sub-tasks or TODOs discovered during development to `TASK.md` under a “Discovered During Work” section.
+### 3. API & Package Development
 
-### 📎 Style & Conventions
-- **Use Python** as the primary language.
-- **Follow PEP8**, use type hints, and format with `black`.
-- **Use `pydantic` for data validation**.
-- Use `FastAPI` for APIs and `SQLAlchemy` or `SQLModel` for ORM if applicable.
-- when making llm related, use langchain, langgraph and langsmith, possible
-- always create an adaptor that standardised the input and outputfor any class or function that can be used by have multiple sources, 
-    - eg a market data api, that can have sources from different exchanges with different api
-    - it should output a standardised class, eg KlineData, AccountData
-- Write **docstrings for every function** using the Google style:
-  ```python
-  def example():
-      """
-      Brief summary.
+- When working on new or existing package methods, do a **pre-flight check**:
+    1. **Verify method existence** in the official API documentation. Do not hallucinate new methods, use context7 tools to pull.
+    2. **Map out the method's purpose** by summarizing its inputs and outputs.
+    3. **Implement the method**, ensuring all possible API parameters are handled correctly.
+- **Always write a unit test for every new method.**
+    - Use a **mock test** if an API key is required and the user has not provided one.
+    - Use a **live test** if no API key is needed.
+    - Add a **failure test** to handle expected errors gracefully.
 
-      Args:
-          param1 (type): Description.
+---
 
-      Returns:
-          type: Description.
-      """
-  ```
+### 4. Testing & Reliability
 
-### Documentation & Explainability
-- **Update `README.md`** when new features are added, dependencies change, or setup steps are modified.
-- **Comment non-obvious code** and ensure everything is understandable to a mid-level developer.
-- When writing complex logic, **add an inline `# Reason:` comment** explaining the why, not just the what.
+- **Tests must live in a dedicated `/tests` folder** that mirrors the project's file structure.
+- **Cover all use cases.** For every new feature or change, add tests for:
+    - **Expected use** (the happy path).
+    - At least one **edge case**.
+    - At least one **failure case**.
+- **Update existing tests** when you modify core logic.
 
-### AI Behavior Rules
-- **Never assume missing context. Ask questions if uncertain.**
-- **Never hallucinate libraries or functions** – only use known, verified Python packages.
-- **Always confirm file paths and module names** exist before referencing them in code or tests.
-- **Never delete or overwrite existing code** unless explicitly instructed to or if part of a task from `TASK.md`.
-- **If editing current file, make a git commit -m "WIP" before editing {CURRENT_FILE} FOR {REASON}**
+---
+
+### 5. Documentation & Explainability
+
+- **Document your code.** Use **Google-style docstrings** for every function and class.
+- **Comment on complex logic.** Use inline comments with a `# Reason:` prefix to explain the "why" behind non-obvious code.
+- **Update the `README.md`** whenever new features, dependencies, or setup steps are introduced.
+
+---
+
+### 6. AI Guardrails
+
+- **Do not assume missing context.** If you're unsure about something, **ask for clarification**.
+- **Never hallucinate** libraries or functions. Only use known, verified packages.
+- **Verify file paths** and module names before referencing them.
+- **Never delete or overwrite existing code** unless explicitly instructed by the user or `TASK.md`.
+- **Precede all file edits with a WIP commit.** Use the message `git commit -m "WIP: Editing {CURRENT_FILE} for {REASON}"`.
