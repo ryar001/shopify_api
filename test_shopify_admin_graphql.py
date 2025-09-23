@@ -3,6 +3,7 @@ import httpx
 import asyncio
 from unittest.mock import AsyncMock, patch
 import os
+from dotenv import load_dotenv
 
 from rest.shopify_admin_graphql import ShopifyAdminGraphQl
 from rest.endpoints import ORDER_CREATE_MUTATION, DRAFT_ORDER_CREATE_MUTATION, ORDER_UPDATE_MUTATION, ORDER_EDIT_BEGIN_MUTATION, DRAFT_ORDER_COMPLETE_MUTATION, DRAFT_ORDER_UPDATE_MUTATION
@@ -62,18 +63,19 @@ async def test_draft_order_create_unit():
         assert response == mock_response_data
 
 # --- Live Tests ---
-# To run live tests, set the following environment variables:
-# SHOPIFY_SHOP_URL (e.g., your-shop-name.myshopify.com)
-# SHOPIFY_ACCESS_TOKEN (e.g., shpat_YOUR_ACCESS_TOKEN)
+# To run live tests, set the following environment variables in a .env file at the project root:
+# SHOPIFY_ADMIN_KEY="shpat_YOUR_ACCESS_TOKEN"
+
+load_dotenv()
 
 @pytest.mark.asyncio
 @pytest.mark.skipif(
-    not os.environ.get("SHOPIFY_SHOP_URL") or not os.environ.get("SHOPIFY_ACCESS_TOKEN"),
-    reason="SHOPIFY_SHOP_URL and SHOPIFY_ACCESS_TOKEN environment variables not set"
+    not os.environ.get("SHOPIFY_ADMIN_KEY"),
+    reason="SHOPIFY_ADMIN_KEY not set in .env file"
 )
 async def test_live_draft_order_create():
-    shop_url = os.environ["SHOPIFY_SHOP_URL"]
-    access_token = os.environ["SHOPIFY_ACCESS_TOKEN"]
+    shop_url = "kangsheng.myshopify.com"
+    access_token = os.environ["SHOPIFY_ADMIN_KEY"]
     client = ShopifyAdminGraphQl(shop_url, access_token)
 
     # Example: Create a simple draft order

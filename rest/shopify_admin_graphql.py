@@ -9,7 +9,8 @@ from .endpoints import (
     DRAFT_ORDER_UPDATE_MUTATION,
     ORDER_CREATE_MANUAL_PAYMENT_MUTATION,
     SUBSCRIPTION_CONTRACT_CREATE_MUTATION,
-    SUBSCRIPTION_BILLING_ATTEMPT_CREATE_MUTATION
+    SUBSCRIPTION_BILLING_ATTEMPT_CREATE_MUTATION,
+    GET_PRODUCTS_LISTING_QUERY
 )
 
 class ShopifyAdminGraphQl:
@@ -59,3 +60,7 @@ class ShopifyAdminGraphQl:
     async def order_create_manual_payment(self, input: dict):
         """Creates a manual payment for an order."""
         return await self._execute_graphql_query(ORDER_CREATE_MANUAL_PAYMENT_MUTATION, input)
+
+    async def get_products_listing(self):
+        """Gets a listing of available products."""
+        return await self._execute_graphql_query(GET_PRODUCTS_LISTING_QUERY)

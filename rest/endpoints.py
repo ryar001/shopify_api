@@ -104,7 +104,7 @@ mutation orderCreateManualPayment($id: ID!, $amount: MoneyInput, $paymentMethodN
 }
 """
 
-nano SUBSCRIPTION_CONTRACT_CREATE_MUTATION = """
+SUBSCRIPTION_CONTRACT_CREATE_MUTATION = """
 mutation subscriptionContractCreate($input: SubscriptionContractCreateInput!) {
   subscriptionContractCreate(input: $input) {
     draft {
@@ -132,6 +132,19 @@ mutation subscriptionBillingAttemptCreate($subscriptionContractId: ID!, $subscri
     userErrors {
       field
       message
+    }
+  }
+}
+"""
+
+GET_PRODUCTS_LISTING_QUERY = """
+query GetProductsListing {
+  products(first: 10, query: "status:active") {
+    nodes {
+      id
+      title
+      handle
+      status
     }
   }
 }

@@ -4,8 +4,8 @@
 - Prioritize readable, reliable, and testable code. If rules conflict, readability for a mid-level developer is the highest priority.
 
 **Project Context & Workflow**
-- Always read `PLANNING.md` at the start of a new conversation to understand the project's architecture, goals, style, and constraints. Create one at root if not available
-- Check `TASK.md` before starting a new task. If the task isn’t listed, add it with a brief description and today's date. Create one at root if not available
+- Always read `PLANNING.md` at the start of a new conversation to understand the project's architecture, goals, style, and constraints. Create a `PLANNING.md` at root if not available
+- Check `TASK.md` before starting a new task. If the task isn’t listed, add it with a brief description and today's date. Create a `TASK.md` at root if not available
 - Use consistent naming conventions, file structure, and architecture patterns as described in `PLANNING.md`.
 - Use the `venv_linux` virtual environment for all Python commands. Ensure dependencies from `requirements.txt` or `pyproject.toml` are installed.
 
