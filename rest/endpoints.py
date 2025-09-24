@@ -149,3 +149,25 @@ query GetProductsListing {
   }
 }
 """
+
+GET_SUBSCRIPTION_CONTRACTS_QUERY = """
+query GetSubscriptionContracts {
+  subscriptionContracts(first: 10) {
+    edges {
+      node {
+        id
+        status
+      }
+    }
+  }
+}
+"""
+
+GET_SHOP_INFO_QUERY = """
+query GetShopInfo {
+  shop {
+    name
+    email
+  }
+}
+"""
